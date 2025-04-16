@@ -63,5 +63,66 @@ class CompanyTest extends TestCase
                  ]);
     }
 
+    public function test_event_dispatched_when_agent_assigned()
+    {
+        Event::fake();
+
+        $user = User::factory()->create();
+
+        $agent = RegisteredAgent::create([
+            'state' => 'Texas',
+            'name' => 'Agente Z',
+            'email' => 'z@example.com',
+            'capacity' => 5,
+        ]);
+
+        $this->postJson('/api/companies', [
+            'user_id' => $user->id,
+            'name' => 'TestCorp Z',
+            'state' => 'Texas',
+            'use_registered_agent_service' => true,
+        ]);
+
+        Event::assertDispatched(RegisteredAgentAssigned::class);
+    }
+
+    public function test_admin_is_notified_when_capacity_reaches_90_percent()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create();
+
+        $agent = RegisteredAgent::create([
+            'state' => 'Georgia',
+            'name' => 'Agente G',
+            'email' => 'agente@example.com',
+            'capacity' => 15,
+        ]);
+
+        for ($i = 0; $i < 14; $i++) {
+            Company::create([
+                'user_id' => $user->id,
+                'name' => 'Fake Company ' . $i,
+                'state' => 'Georgia',
+                'registered_agent_type' => 'registered_agent',
+                'registered_agent_id' => $agent->id,
+            ]);
+        }
+
+        $this->postJson('/api/companies', [
+            'user_id' => $user->id,
+            'name' => 'Testing Company Inc',
+            'state' => 'Georgia',
+            'use_registered_agent_service' => true,
+        ]);
+
+        Notification::assertSentTo(
+            new \Illuminate\Notifications\AnonymousNotifiable,
+            StateCapacityReached::class,
+            function ($notification, $channels, $notifiable) {
+                return $notifiable->routes['mail'] === 'admin@bizee.test';
+            }
+        );
+    }
 
 }
