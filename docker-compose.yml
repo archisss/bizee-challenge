@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: bizee-app
+    volumes:
+      - .:/var/www
+    depends_on:
+      - mysql
+    networks:
+      - bizee
+
+  nginx:
+    image: nginx:latest
+    container_name: bizee-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - bizee
+
+  mysql:
+    image: mysql:8
+    container_name: bizee-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bizee
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - bizee
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: bizee-pma
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
+    networks:
+      - bizee
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: bizee-mailpit
+    ports:
+      - "8025:8025"
+    networks:
+      - bizee
+
+volumes:
+  mysql_data:
+
+networks:
+  bizee:
+    driver: bridge
