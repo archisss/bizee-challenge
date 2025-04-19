@@ -15,3 +15,7 @@ Route::prefix('companies')->group(function () {
 });
 
 Route::get('/agent-availability/{state}', [AgentAvailabilityController::class, 'check']);
+
+Route::get('/test', function () {
+    return response()->json(['message' => 'API is working']);
+});
