@@ -33,7 +33,9 @@ from your terminal, powershell or gitbash run the next commands one by one
 
 - composer install 
 - php artisan key:generate
-- php artisan migrate:fresh --seed
+- php artisan migrate:fresh --seed 
+   NOTE: In case you get any error here is because Faker use the same email for more than one agent or user please run **php artisan migrate:fresh --seed** 
+
 - exit 
 
 ### 3. Runing Test in Docker 
