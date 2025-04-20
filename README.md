@@ -48,6 +48,8 @@ from your terminal, powershell or gitbash run the next commands one by one
 Database **bizee** running and tables with informacion already seed 5 users, 5 companies, 51 Agents
 EndPoints.
 
+**[POSTMAN API]** [Postman API Examples Link]([http://localhost:8000](https://.postman.co/workspace/My-Workspace~f57d98a6-29dc-4718-88b2-9aaa46a762b5/collection/42625272-6ecb85e3-b845-4207-9189-3c5bdcc8c554?action=share&creator=42625272))  
+
 #### Create Company 
 
 - Creates a new company by the user_id and determine if will used a registered agent **registered_agent_id** for the database **true** or if the new company will registered to the same user_id **false**
