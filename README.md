@@ -39,6 +39,8 @@ from your terminal, powershell or gitbash run the next commands one by one
 ### 3. Runing Test in Docker 
 - docker exec -it bizee-app php artisan test --testsuite=Feature
 
+---- 
+
 ### Overview of the Project Setup 
 
 Database **bizee** running and tables with informacion already seed 5 users, 5 companies, 51 Agents
@@ -130,3 +132,25 @@ Response:
 | ------------- |:-------------:|
 | user      | secret     |
 
+
+------
+
+### Future Updates 
+
+- Authentication and Authorization
+Implement JWT or Laravel Sanctum to secure API endpoints and associate companies with authenticated users.
+
+- Pagination and Filtering
+Add pagination (?page=1) and query filters by state, user, company name, etc., especially for listing companies.
+
+- API Documentation (Swagger)
+Integrate Swagger to generate visual and interactive API documentation.
+
+- Admin Dashboard (optional)
+Build a basic frontend using Vue.js or React to manage users, agents, and companies visually.
+
+- Integration Testing and Code Coverage
+Add end-to-end tests and use tools like PHPStan, Pest, or PHPUnit with coverage reports.
+
+- Internationalization (i18n)
+Make the application translatable to support multiple languages (English and Spanish).
